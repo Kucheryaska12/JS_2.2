@@ -2,12 +2,13 @@ class Game {
   constructor(container) {
     this.container = container;
     this.wordElement = container.querySelector('.word');
+    this.timerElement = container.querySelector('#timer');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
-
     this.reset();
-
+    this.timer();
     this.registerEvents();
+    
   }
 
   reset() {
@@ -26,19 +27,19 @@ class Game {
       } else {
         this.fail();
       };
-    })
-     // вытягиваем символ с клавиатуры
-    // берем букву с классами symbol
-    // сравниваем
-    
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода символа вызываем this.success()
-      При неправильном вводе символа - this.fail();
-      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
-     */
+    });
+  }
+
+  
+  
+  timer() {
+    const intervalN = setInterval(() => {
+      if (this.timerElement.textContent > 0) {
+        this.timerElement.textContent --;
+      } else if (this.timerElement.textContent == 0) {
+        this.fail();
+      };
+    }, 1000);
   }
 
   success() {
@@ -66,9 +67,10 @@ class Game {
     this.setNewWord();
   }
 
+  
   setNewWord() {
     const word = this.getWord();
-
+    this.timerElement.textContent = word.length;
     this.renderWord(word);
   }
 
